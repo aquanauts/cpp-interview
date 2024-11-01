@@ -16,5 +16,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
 
 # Testing
 find_package(Catch2 3 REQUIRED)
+find_package(fmt REQUIRED)
 add_executable(test test.cpp)
-target_link_libraries(test PRIVATE Catch2::Catch2WithMain interview_lib)
+target_link_libraries(test PRIVATE Catch2::Catch2WithMain interview_lib fmt)

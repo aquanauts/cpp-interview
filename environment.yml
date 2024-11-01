@@ -9,3 +9,4 @@ dependencies:
   - clang-format=19.1.2
   - catch2=3.7.1
   - ninja=1.12.1
+  - fmt=11.0.2
