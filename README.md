@@ -66,4 +66,4 @@ When you're on your branch, `make build` will build the unit test binary, and `m
 
 You can build and run in release mode by setting the environment variable `BUILD_TYPE=release` in your invocation of either `make build` or `make test`.
 
-When you're satisfied with your work, run `make patch` and send the result, `aqtc_cpp.patch`, to your recruiter. 
+When you're satisfied with your work, run `make patch` and submit the resultant patch file, `aqtc_cpp.patch`, to the link sent in the e-mail you received.
