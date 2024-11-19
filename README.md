@@ -1,64 +1,37 @@
-# Aquatic's C++ Test
+# Air Traffic Control
 
 ## Background
-An exchange is a process that accepts orders from market participants, and matches "bid" orders (buys) with "ask" orders (sells). When the orders match (described below), the relevant orders "trade".
 
-Orders are uniquely identified by an unsigned integer. Orders have a "side" (either `BID` or `ASK`), a "price" (a signed integer), and a "quantity" (an unsigned integer).
+Let's say that we're an air traffic control team, and we'd like to write some software to help our human traffic controllers ensure that the aircraft under our management at any given moment aren't at risk of colliding with each other. Towards that objective, we'd like to write a C++ library that processes messages that contain information about aircraft location. Each position message consists of the following fields:
 
-A bid order's price is the maximum price the participant is prepared to pay. An ask order's price is the minimum price the participant is prepared to sell for.
+- `timestamp`: a timestamp for the current air traffic control session in milliseconds
+- `aircraft_id`: the aircraft's identifier
+- `position`: a 3D vector indicating the current position of the aircraft
+- `direction`: a unit 3D vector indicating the direction of the aircraft's travel
+- `speed`: the aircraft's speed in meters per second
 
-An order that doesn't immediately match an existing order to buy or sell is remembered, and becomes valid until it is either traded against by a subsequent order, or is canceled. Such an order is said to "rest" in the book.
+In addition, there are departure messages that arise when an aircraft exits our airspace.
 
-An incoming order is compared to all the resting orders on the opposite side of the book (incoming bids are matched against resting asks and vice versa). Matches occur when the incoming order is at or better than any resting order(s). Each match causes two trades to be noted: the resting order trades and then the incoming order. The quantity that trades is the minimum of the two orders, and the price is that of the resting order.
+Your task is to finish the `Planespotter` class in `src/Planespotter.cpp` and to write some basic documentation in `DOCUMENTATION.md` explaining to a project manager the assumptions that the software makes, its limitations, operating recommendations for the software in its current state, and recommendations for a future iterations.
 
-An incoming order can match multiple resting orders. Orders are matched by the best price first, and then for orders at the same price, by the order that rested first.
+A `Planespotter` models each aircraft as a point moving at a constant speed in a straight line in 3 dimensions. Upon receiving a position message, the `Planespotter` should tell us whether any of the points it knows about are expected to cause a proximity violation with any of the other known aircraft over a provided time horizon. Planes it already knows about are assumed to still be proceeding on their last known courses. The proximity threshold and prediction time horizon can be configured by the user of a `Planespotter`. There's some middle school math involved, but we won't get any more involved than that.
 
-If the incoming order has any remaining quantity left, it will rest in the book.
+The unit tests in `test.cpp` will act as the entry point for running your library code and as a limited form of validation. Feel free to add any additional classes, libraries, tests, etc. that you're inclined to. You may even modify the signature of the `Planespotter` methods, so long as it retains its utility.
 
-You will not be asked to delete a non-existent order. An order with a given ID will be added at most once.
-
-### Examples
-
-All these examples assume the book is empty to start with. Some examples are also present in `test.cpp`.
-
-#### Example one
-
-- A bid order at price 150 for quantity 10 rests.
-- An ask order at price 150 for quantity 5 will trade 5 lots against the resting bid order (resulting in two trades, one for the resting order, and then one for the incoming ask order). No quantity rests from the ask order.
-- A subsequent ask order at price 150 for 20 will trade the remaining 5 lots with the resting order (again, resulting in two trades). The resting bid order is used up, and the remaining quantity in the incoming order (15, in this case) will rest.
-
-#### Example two
-
-- A bid order at price 150 for quantity 10 rests.
-- Another bid order at price 150 for quantity 50 rests.
-- Yet another bid order at price 155 for quantity 20 rests.
-- An incoming ask order to sell 1000 at price 140 will match with, in this sequence:
-  - the bid order at 155, for 20, depleting it.
-  - the first-placed bid order at 150 for 10, depleting it.
-  - the bid order at 150 for 50, depleting it
-- the incoming ask order then rests at price 140 with remaining quantity 920
-
-## Your task
-
-Your task is to finish the code in `src/Exchange.cpp`, recording orders as they are placed, potentially matching resting orders, and deleted. Your code must match orders appropriately, and should call the constructor-provided `TradeReporter`'s `on_trade` method with the details of the matching trade. We'll use the tests in `test.cpp` as our entry point.
-
-Simple types are provided in `src/Types.hpp`. Please feel free to modify existing files or to add files. Compiler flags are specified in `CMakeLists.txt`.
-
-
-### Some things to consider
-
-We expect that solving this will take you about two hours. Your implementation should prioritize correctness and simplicity, rather than performance, generality, or the accurate simulation of real-world exchanges.
+### What we're looking for
+We expect that solving this will take you about two hours of active development (i.e. reading this, consulting reference material, typing, iteration, validation) time, although you're free to take as much or as little time as you want. Your implementation should prioritize correctness and maintainability, rather than performance, generality, or the accurate simulation of real-world collision avoidance systems. None of those other qualities are bad, however, and we'd certainly welcome a solution that incorporated them; you can also comment in `DOCUMENTATION.md` about how you'd extend the software along those other axes.
 
 Here are some of the things we'll be looking for in your solution:
   * Can you understand the development environment and be productive in it?
   * Can you create a straightforward and effective solution in a reasonable amount of time?
+  * Can you write technical material that's useful to its audience?
   * Is there any unnecessary complexity? Is the amount of abstraction appropriate?
-  * Does it resemble software that others would want to maintain in perpetuity?
+  * Can you write software that others would want to maintain in perpetuity?
   * Does it demonstrate an awareness for contemporary best practices in C++?
 
 ## Development
 
-The repository, in its current state, is only compatible with a 64-bit version of a Linux-based OS. We recommend accessing one for free via a Github Codespace (see `codespace.png` if you're unfamiliar with how to obtain one). A Codespace is a preconfigured, isolated development container running in the cloud, and so insulates you from some potential development environment woes. The next stage of the interview process will also be conducted within a collaborative Codespace (due to the availability of a convenient live sharing extension), extending the work you do in this stage.
+The repository is compatible with a 64-bit version of a Linux-based OS. We recommend accessing one for free via a Github Codespace (see `codespace.png` for a screenshot of where to click on Github). A Codespace is a preconfigured, isolated development container running in the cloud, and so insulates you from some potential development environment woes. The follow-up interview will also be conducted within a collaborative Codespace.
 
 When you've got the repository checked out in your environment of choice, it's important to first create a working branch with `git checkout -b [your branch name]`, since you'll be submitting a `git diff` of the result of your work and the state of `main`.
 
@@ -66,4 +39,6 @@ When you're on your branch, `make build` will build the unit test binary, and `m
 
 You can build and run in release mode by setting the environment variable `BUILD_TYPE=release` in your invocation of either `make build` or `make test`.
 
-When you're satisfied with your work, run `make patch` and submit the resultant patch file, `aqtc_cpp.patch`, to the link sent in the e-mail you received.
+When you're done, run `make patch` and submit the resultant patch file, `aqtc_cpp.patch`, to the link sent in the e-mail you received.
+
+This is a new question, so please let us know about any ambiguities or technical issues you encounter.
