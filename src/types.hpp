@@ -15,7 +15,7 @@ template <typename T> struct Vec3 {
 struct PositionMessage {
   uint32_t timestamp{};
   AircraftId aircraft_id{};
-  Vec3<int32_t> position;
+  Vec3<float> position;
   Vec3<float> direction;
   uint16_t speed{};
 };
