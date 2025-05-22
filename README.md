@@ -8,13 +8,13 @@ Let's say that we're an air traffic control team, and we'd like to write some so
 - `aircraft_id`: the aircraft's identifier
 - `position`: a 3D vector indicating the current position of the aircraft
 - `direction`: a unit 3D vector indicating the direction of the aircraft's travel
-- `speed`: the aircraft's speed in meters per second
+- `ft_per_s`: the aircraft's speed in feet per second
 
 In addition, there are departure messages that arise when an aircraft exits our airspace.
 
 Your task is to finish the `Planespotter` class in `src/Planespotter.cpp` and to write some basic documentation in `DOCUMENTATION.md` explaining to a project manager the assumptions that the software makes, its limitations, operating recommendations for the software in its current state, and recommendations for a future iterations.
 
-A `Planespotter` models each aircraft as a point moving at a constant speed in a straight line in 3 dimensions. Upon receiving a position message, the `Planespotter` should tell us whether any of the points it knows about are expected to cause a proximity violation with any of the other known aircraft over a provided time horizon. Planes it already knows about are assumed to still be proceeding on their last known courses. The proximity threshold and prediction time horizon can be configured by the user of a `Planespotter`. There's some middle school math involved, but we won't get any more involved than that.
+A `Planespotter` models each aircraft as a point moving at a constant speed in a straight line in 3 dimensions. Upon receiving a position message, the `Planespotter` should tell us whether any of the points it knows about are expected to cause a proximity violation with any of the other known aircraft over a provided time horizon. Planes it already knows about are assumed to still be proceeding on their last known courses. The proximity threshold and prediction time horizon can be configured by the user of a `Planespotter`. There's some middle school math involved, but we won't get any more involved than that. The goal of this exercise is also not to test your awareness of numerically-stable algorithms either; we can use larger spheres to model the planes to account for imprecision, and planes should periodically update their own positions and speeds, so we won't be accumulating an endless amount of floating point error.
 
 The unit tests in `test.cpp` will act as the entry point for running your library code and as a limited form of validation. Feel free to add any additional classes, libraries, tests, etc. that you're inclined to. You may even modify the signature of the `Planespotter` methods, so long as it retains its utility.
 
@@ -24,9 +24,9 @@ We expect that solving this will take you about two hours of active development 
 Here are some of the things we'll be looking for in your solution:
   * Can you understand the development environment and be productive in it?
   * Can you create a straightforward and effective solution in a reasonable amount of time?
-  * Can you write technical material that's useful to its audience?
+  * Can you create technical material that's useful to its audience?
   * Is there any unnecessary complexity? Is the amount of abstraction appropriate?
-  * Can you write software that others would want to maintain in perpetuity?
+  * Can you create software that others would want to maintain in perpetuity?
   * Does it demonstrate an awareness for contemporary best practices in C++?
 
 ## Development
@@ -41,4 +41,4 @@ You can build and run in release mode by setting the environment variable `BUILD
 
 When you're done, run `make patch` and submit the resultant patch file, `aqtc_cpp.patch`, to the link sent in the e-mail you received.
 
-This is a new question, so please let us know about any ambiguities or technical issues you encounter.
+Let us know about any ambiguities or technical issues you encounter.
