@@ -1,0 +1,9 @@
+name: build
+run-name: Run `make build`
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make build
