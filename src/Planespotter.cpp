@@ -4,7 +4,7 @@
 namespace aqtc {
 
 Planespotter::Planespotter(uint16_t proximity_threshold,
-                           uint8_t prediction_horizon)
+                           std::chrono::seconds prediction_horizon)
     : proximity_threshold(proximity_threshold),
       prediction_horizon(prediction_horizon) {}
 

@@ -1,6 +1,10 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
+
+// Feel free to modify this file in any way that makes sense to you,
+// but please ensure that the tests in test.cpp continue to run.
 
 namespace aqtc {
 
@@ -13,11 +17,11 @@ template <typename T> struct Vec3 {
 };
 
 struct PositionMessage {
-  uint32_t timestamp{};
+  std::chrono::milliseconds timestamp{};
   AircraftId aircraft_id{};
   Vec3<int32_t> position;
   Vec3<float> direction;
-  uint16_t speed{};
+  uint16_t ft_per_s{};
 };
 
 struct DepartureMessage {
