@@ -30,7 +30,7 @@ Vec3<float> unit(Vec3<float> v) {
 // Feel free to modify this file in any way that makes sense to you.
 
 TEST_CASE("A Planespotter") {
-  // Configured to alert if any planes are expected to come within 500 meters of
+  // Configured to alert if any planes are expected to come within 500 feet of
   // each other in the next 30 seconds
   Planespotter spotter{500, 30s};
 
@@ -79,7 +79,7 @@ TEST_CASE("A Planespotter") {
   }
 
   SECTION(
-      "Should complain if two static aircraft are reported to be 500 meters of "
+      "Should complain if two static aircraft are reported to be 500 feet of "
       "each other at the same time") {
     CHECK(spotter.handle(PositionMessage{0ms, 1, {0, 0, 0}, {1, 0, 0}, 0})
               .empty());
@@ -92,7 +92,7 @@ TEST_CASE("A Planespotter") {
 
   SECTION("Should complain if a moving aircraft is projected to be within 500 "
           "feet of a static aircraft") {
-    // Plane 1 moving at 250m/s along the x-axis will be 7500m away in 30s
+    // Plane 1 moving at 250ft/s along the x-axis will be 7500m away in 30s
     CHECK(spotter.handle(PositionMessage{0ms, 1, {0, 0, 0}, {1, 0, 0}, 250})
               .empty());
 
@@ -105,11 +105,11 @@ TEST_CASE("A Planespotter") {
 
   SECTION("Should complain if a moving aircraft is projected to be within 500 "
           "feet of another moving aircraft") {
-    // Plane 1 moving at 250m/s along the x-axis will be 7500m away in 30s
+    // Plane 1 moving at 250ft/s along the x-axis will be 7500m away in 30s
     CHECK(spotter.handle(PositionMessage{0ms, 1, {0, 0, 0}, {1, 0, 0}, 250})
               .empty());
 
-    // Plane 2 moving at 100m/s, but starting farther up the x-axis
+    // Plane 2 moving at 100ft/s, but starting farther up the x-axis
     const auto proximity_violations =
         spotter.handle(PositionMessage{0ms, 2, {4500, 0, 0}, {1, 0, 0}, 100});
     check_id_in(1, proximity_violations);
